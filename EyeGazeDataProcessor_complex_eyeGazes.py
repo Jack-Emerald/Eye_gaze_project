@@ -17,8 +17,9 @@ from sklearn.metrics import confusion_matrix
 
 class GestureDataProcessor:
     def __init__(self):
-        self.feature_match = {"fixcenter": 1, "highdynamic": 2, "lowdynamic": 3, "speaker": 4, "relax": 5}
-        self.gesture_name = ["fixcenter", "highdynamic", "lowdynamic", "speaker", "relax"]
+        #self.feature_match = {"fixcenter": 1, "highdynamic": 2, "lowdynamic": 3, "speaker": 4, "relax": 5}
+        self.feature_match = {"fixcenter": 1, "highdynamic": 2, "relax": 3}
+        self.gesture_name = ["fixcenter", "highdynamic", "relax"]
         self.loaded_x = list()
         self.loaded_y = list()
         self.testFile = list()
@@ -37,11 +38,19 @@ class GestureDataProcessor:
         self.trainFile = [[11,12,13,14,16,17,18,19,
                            21,22,23,24,26,27,28,29,
                            31,32,33,34,36,37,38,39,
-                           41,42,43,44,46,47,48,49]]
+                           41,42,43,44,46,47,48,49,
+                           51,52,53,54,56,57,58,59,
+                           61,62,63,64,66,67,68,69,
+                           71,72,73,74,76,77,78,79,
+                           81,82,83,84,86,87,88,89]]
         self.testFile = [[15, 110,
                           25, 210,
                           35, 310,
-                          45, 410]]
+                          45, 410,
+                          55, 510,
+                          65, 610,
+                          75, 710,
+                          85, 810]]
 
 
     def generate_graph(self, file_path):
@@ -153,11 +162,11 @@ class GestureDataProcessor:
 
         # An epoch refers to one complete pass through the entire training dataset
         # Stop if model doesn’t improve on the validation set for 5 consecutive epochs
-        #early_stopping = keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 5)
-        #model.fit(trainX, trainy, epochs, batch_size, verbose=verbose, validation_split=0.1, callbacks=[early_stopping])
+        early_stopping = keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 5)
+        model.fit(trainX, trainy, epochs, batch_size, verbose=verbose, validation_split=0.1, callbacks=[early_stopping])
 
         # Fit the model
-        model.fit(trainX, trainy, epochs = epochs, batch_size = batch_size, verbose = verbose)
+        #model.fit(trainX, trainy, epochs = epochs, batch_size = batch_size, verbose = verbose)
 
         # Evaluate the model on test data
         _, accuracy = model.evaluate(testX, testy, batch_size = batch_size, verbose = 0)
